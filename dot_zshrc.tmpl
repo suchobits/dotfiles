@@ -1,0 +1,79 @@
+# ~/.zshrc (managed by chezmoi)
+
+# === Homebrew ===
+{{ if eq .chezmoi.os "darwin" -}}
+eval "$(/opt/homebrew/bin/brew shellenv)"
+{{ else if eq .chezmoi.os "linux" -}}
+eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+{{ end -}}
+
+# === Environment ===
+export EDITOR="nvim"
+export VISUAL="nvim"
+export LANG="en_US.UTF-8"
+
+{{ if eq .chezmoi.os "darwin" -}}
+export JAVA_HOME=$(/usr/libexec/java_home -v 21 2>/dev/null)
+{{ else -}}
+export JAVA_HOME="/usr/lib/jvm/java-21-openjdk"
+{{ end -}}
+
+# === Android SDK ===
+{{ if eq .chezmoi.os "darwin" -}}
+export ANDROID_HOME="$HOME/Library/Android/sdk"
+{{ else -}}
+export ANDROID_HOME="$HOME/Android/Sdk"
+{{ end -}}
+export NDK_HOME="$ANDROID_HOME/ndk/$(ls -1 $ANDROID_HOME/ndk 2>/dev/null | head -1)"
+export PATH="$JAVA_HOME/bin:$ANDROID_HOME/platform-tools:$ANDROID_HOME/emulator:$PATH"
+
+# === Path ===
+export PATH="$HOME/.local/bin:$PATH"
+
+# === NVM ===
+export NVM_DIR="$HOME/.nvm"
+{{ if eq .chezmoi.os "darwin" -}}
+[ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"
+[ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"
+{{ else -}}
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+{{ end -}}
+
+# === opencode ===
+export PATH="$HOME/.opencode/bin:$PATH"
+
+# === LM Studio CLI ===
+export PATH="$PATH:$HOME/.lmstudio/bin"
+
+# === Starship ===
+eval "$(starship init zsh)"
+
+# === Zoxide ===
+eval "$(zoxide init zsh)"
+
+# === fzf ===
+eval "$(fzf --zsh)"
+# Tokyo Night fzf colors
+export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS \
+  --color=fg:#c0caf5,bg:#1a1b26,hl:#ff9e64 \
+  --color=fg+:#c0caf5,bg+:#292e42,hl+:#ff9e64 \
+  --color=info:#7aa2f7,prompt:#7dcfff,pointer:#7dcfff \
+  --color=marker:#9ece6a,spinner:#9ece6a,header:#9ece6a"
+
+# === Aliases ===
+source ~/.shell_aliases
+
+# === Neovim Config Switcher ===
+alias nvim-web='NVIM_APPNAME=nvim-web nvim'
+alias nvim-ios='NVIM_APPNAME=nvim-ios nvim'
+alias nvim-spring='NVIM_APPNAME=nvim-spring nvim'
+alias nvim-android='NVIM_APPNAME=nvim-android nvim'
+alias v='nvim-web'
+
+vv() {
+  local config
+  config=$(fd --max-depth 1 --glob 'nvim-*' ~/.config | fzf --prompt="Neovim Config > " --height=~50% --layout=reverse --border --exit-0)
+  [[ -z $config ]] && echo "No config selected" && return
+  NVIM_APPNAME=$(basename "$config") nvim "$@"
+}

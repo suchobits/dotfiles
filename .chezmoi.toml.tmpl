@@ -1,0 +1,6 @@
+# .chezmoi.toml.tmpl
+[data]
+    email = "{{ promptStringOnce . "email" "Email address" }}"
+    name = "{{ promptStringOnce . "name" "Full name" }}"
+    is_macos = {{ eq .chezmoi.os "darwin" }}
+    is_linux = {{ eq .chezmoi.os "linux" }}

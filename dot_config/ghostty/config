@@ -1,0 +1,40 @@
+# Theme
+theme = TokyoNight Night
+
+# Font
+font-family = JetBrainsMono Nerd Font
+font-size = 14
+font-thicken = true
+
+# Window
+window-padding-x = 10
+window-padding-y = 10
+window-padding-balance = true
+window-colorspace = display-p3
+background-opacity = 0.95
+background-blur-radius = 20
+
+# macOS specific
+macos-titlebar-style = tabs
+
+# Cursor
+cursor-style = block
+cursor-style-blink = false
+
+# Shell integration
+shell-integration = detect
+shell-integration-features = cursor,sudo,title
+
+# Scrollback
+scrollback-limit = 10000
+
+# Clipboard
+clipboard-read = allow
+clipboard-write = allow
+
+# Mouse
+mouse-hide-while-typing = true
+
+# Keybinds for splits (tmux-like)
+keybind = cmd+d=new_split:right
+keybind = cmd+shift+d=new_split:down

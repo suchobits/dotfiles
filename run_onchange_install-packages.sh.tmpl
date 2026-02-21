@@ -1,0 +1,102 @@
+#!/bin/bash
+# chezmoi:template:hash
+
+{{ if eq .chezmoi.os "darwin" -}}
+# === macOS: Homebrew ===
+if ! command -v brew &> /dev/null; then
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+fi
+
+brew bundle --file=/dev/stdin <<EOF
+# Terminal & Shell
+brew "neovim"
+brew "tmux"
+brew "starship"
+brew "zsh"
+
+# Core CLI tools
+brew "ripgrep"
+brew "fd"
+brew "fzf"
+brew "lazygit"
+brew "bat"
+brew "eza"
+brew "zoxide"
+brew "jq"
+brew "tree"
+brew "wget"
+brew "curl"
+brew "coreutils"
+brew "gnu-sed"
+
+# Git (git itself comes with Xcode CLT on macOS)
+brew "gh"
+brew "git-delta"
+
+# Fonts
+cask "font-jetbrains-mono-nerd-font"
+cask "font-monaspice-nerd-font"
+cask "font-noto-sans-symbols-2"
+
+# Node.js ecosystem (for TypeScript dev)
+brew "node"
+brew "pnpm"
+
+# JVM ecosystem (for Kotlin Spring Boot + Android)
+brew "openjdk@21"
+brew "kotlin"
+brew "gradle"
+brew "ktlint"
+
+# Swift/iOS ecosystem (macOS only)
+brew "swiftformat"
+brew "swiftlint"
+brew "xcbeautify"
+brew "xcode-build-server"
+brew "xcp"
+
+# Python (for various tooling)
+brew "python@3"
+brew "pipx"
+
+# Tmux dependencies for tmux-powerkit plugin
+brew "bash"
+brew "bc"
+brew "gawk"
+brew "gsed"
+
+# Terminal
+cask "ghostty"
+EOF
+
+# iOS-specific tools (macOS only)
+pipx install pymobiledevice3 || true
+
+{{ else if eq .chezmoi.os "linux" -}}
+# === Linux: Homebrew (Linuxbrew) ===
+if ! command -v brew &> /dev/null; then
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+fi
+
+brew install neovim tmux starship ripgrep fd fzf lazygit bat eza zoxide jq tree wget curl git gh git-delta
+brew install node pnpm
+brew install openjdk@21 kotlin gradle ktlint
+brew install python@3 pipx
+brew install bash bc gawk
+
+# Fonts (Linux — use Homebrew cask if available, else manual)
+brew install --cask font-jetbrains-mono-nerd-font 2>/dev/null || {
+    mkdir -p ~/.local/share/fonts
+    cd /tmp
+    curl -fLO https://github.com/ryanoasis/nerd-fonts/releases/latest/download/JetBrainsMono.tar.xz
+    tar -xf JetBrainsMono.tar.xz -C ~/.local/share/fonts/
+    fc-cache -fv
+}
+
+# Swift toolchain for Linux (non-Xcode Swift development)
+if ! command -v swift &> /dev/null; then
+    brew install swift || true
+fi
+
+{{ end -}}

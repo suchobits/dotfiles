@@ -1,0 +1,35 @@
+# ~/.shell_aliases — shared aliases across shells
+
+# === Navigation ===
+alias ..='cd ..'
+alias ...='cd ../..'
+
+# === Modern CLI replacements ===
+alias ls='eza --icons'
+alias ll='eza -la --icons --git'
+alias lt='eza --tree --icons --level=2'
+alias cat='bat'
+
+# === Git ===
+alias g='git'
+alias gs='git status'
+alias ga='git add'
+alias gc='git commit'
+alias gp='git push'
+alias gl='git pull'
+alias gd='git diff'
+alias glog='git log --oneline --graph --decorate'
+alias lg='lazygit'
+
+# === Chezmoi ===
+alias cm='chezmoi'
+alias cma='chezmoi apply'
+alias cmd='chezmoi diff'
+alias cme='chezmoi edit'
+
+# === Claude ===
+alias cdsp="claude --dangerously-skip-permissions"
+
+# === Misc ===
+alias reload='source ~/.zshrc'
+alias path='echo -e ${PATH//:/\\n}'

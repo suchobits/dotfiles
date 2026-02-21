@@ -1,0 +1,13 @@
+# .chezmoiignore
+
+CLAUDE.md
+
+# Ghostty is available on both macOS and Linux, no ignore needed
+
+# iOS tools config only relevant on macOS but doesn't hurt on Linux
+# We keep it everywhere — sourcekit-lsp works for SPM projects on Linux
+
+{{ if ne .chezmoi.os "darwin" }}
+# Nothing to ignore for Linux currently
+# All configs are harmless on both platforms
+{{ end }}
