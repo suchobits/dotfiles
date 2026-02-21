@@ -43,7 +43,7 @@ brew "node"
 brew "pnpm"
 
 # JVM ecosystem (for Kotlin Spring Boot + Android)
-brew "openjdk@21"
+cask "zulu@17"
 brew "kotlin"
 brew "gradle"
 brew "ktlint"
@@ -81,7 +81,8 @@ fi
 
 brew install neovim tmux starship ripgrep fd fzf lazygit bat eza zoxide jq tree wget curl git gh git-delta
 brew install node pnpm
-brew install openjdk@21 kotlin gradle ktlint
+brew install kotlin gradle ktlint
+brew install --cask zulu@17 2>/dev/null || true
 brew install python@3 pipx
 brew install bash bc gawk
 
