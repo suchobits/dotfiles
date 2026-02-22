@@ -105,10 +105,15 @@ pipx install pymobiledevice3 || true
 
 {{ else if eq .chezmoi.os "linux" -}}
 # === Linux: Homebrew (Linuxbrew) ===
+# Homebrew requires git and build tools
+if ! command -v git &> /dev/null; then
+    sudo apt-get update && sudo apt-get install -y git build-essential curl
+fi
+
 if ! command -v brew &> /dev/null; then
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-    eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 fi
+eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 
 brew install neovim tmux starship ripgrep fd fzf lazygit bat eza zoxide jq tree wget curl git gh git-delta
 brew install node pnpm
