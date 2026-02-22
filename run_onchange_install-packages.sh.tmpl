@@ -33,6 +33,13 @@ brew "gnu-sed"
 brew "gh"
 brew "git-delta"
 
+# API testing
+brew "hurl"
+
+# AI coding agents
+brew "opencode"
+brew "gemini-cli"
+
 # Fonts
 cask "font-jetbrains-mono-nerd-font"
 cask "font-monaspice-nerd-font"
@@ -67,7 +74,25 @@ brew "gsed"
 
 # Terminal
 cask "ghostty"
+
+# AI coding agents & editors
+cask "claude-code"
+cask "codex"
+cask "codex-app"
+cask "cursor"
+cask "visual-studio-code"
+
+# Apps
+cask "spotify"
+cask "obsidian"
+cask "lm-studio"
+
+# Mac App Store
+brew "mas"
 EOF
+
+# Mac App Store apps
+mas install 497799835 || true  # Xcode
 
 # iOS-specific tools (macOS only)
 pipx install pymobiledevice3 || true
