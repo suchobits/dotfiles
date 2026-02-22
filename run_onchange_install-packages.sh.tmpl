@@ -36,9 +36,11 @@ brew "git-delta"
 # API testing
 brew "hurl"
 
+{{ if ne .flavor "work" -}}
 # AI coding agents
 brew "opencode"
 brew "gemini-cli"
+{{ end -}}
 
 # Fonts
 cask "font-jetbrains-mono-nerd-font"
@@ -54,6 +56,7 @@ cask "zulu@17"
 brew "kotlin"
 brew "gradle"
 brew "ktlint"
+brew "JetBrains/utils/kotlin-lsp"
 
 # Swift/iOS ecosystem (macOS only)
 brew "swiftformat"
@@ -75,6 +78,7 @@ brew "gsed"
 # Terminal
 cask "ghostty"
 
+{{ if ne .flavor "work" -}}
 # AI coding agents & editors
 cask "claude-code"
 cask "codex"
@@ -82,10 +86,11 @@ cask "codex-app"
 cask "cursor"
 cask "visual-studio-code"
 
-# Apps
+# Personal apps
 cask "spotify"
 cask "obsidian"
 cask "lm-studio"
+{{ end -}}
 
 # Mac App Store
 brew "mas"

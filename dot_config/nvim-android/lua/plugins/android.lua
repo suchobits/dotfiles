@@ -1,18 +1,21 @@
 return {
-  -- Kotlin LSP
+  -- JetBrains Kotlin LSP (replaces community kotlin_language_server)
   {
     "neovim/nvim-lspconfig",
     opts = {
       servers = {
-        kotlin_language_server = {
-          root_dir = function(fname)
-            local util = require("lspconfig.util")
-            return util.root_pattern(
-              "settings.gradle", "settings.gradle.kts",
-              "build.gradle", "build.gradle.kts",
-              "gradlew"
-            )(fname)
-          end,
+        kotlin_language_server = { enabled = false },
+        kotlin_lsp = {
+          cmd = { "kotlin-lsp", "--stdio" },
+          filetypes = { "kotlin" },
+          root_markers = {
+            "settings.gradle",
+            "settings.gradle.kts",
+            "build.gradle",
+            "build.gradle.kts",
+            "gradlew",
+          },
+          mason = false,
         },
       },
     },
@@ -43,6 +46,17 @@ return {
     opts = {
       servers = {
         lemminx = {},
+      },
+    },
+  },
+
+  -- which-key group labels for discoverability
+  {
+    "folke/which-key.nvim",
+    opts = {
+      spec = {
+        { "<leader>r", group = "run" },
+        { "g", group = "goto" },
       },
     },
   },

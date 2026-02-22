@@ -2,5 +2,6 @@
 [data]
     email = "{{ promptStringOnce . "email" "Email address" }}"
     name = "{{ promptStringOnce . "name" "Full name" }}"
+    flavor = "{{ promptStringOnce . "flavor" "Flavor (personal/work)" | default "personal" }}"
     is_macos = {{ eq .chezmoi.os "darwin" }}
     is_linux = {{ eq .chezmoi.os "linux" }}

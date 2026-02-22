@@ -1,6 +1,10 @@
 # .chezmoiignore
 
 CLAUDE.md
+install.sh
+
+# LazyVim manages lazyvim.json at runtime (news, version, extras)
+.config/nvim-*/lazyvim.json
 
 # Ghostty is available on both macOS and Linux, no ignore needed
 
