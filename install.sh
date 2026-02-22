@@ -39,16 +39,9 @@ esac
 
 printf '==> Bootstrapping with flavor: %s\n' "$FLAVOR"
 
-# Install chezmoi if not already present
-if ! command -v chezmoi >/dev/null 2>&1; then
-    printf '==> Installing chezmoi...\n'
-    sh -c "$(curl -fsLS get.chezmoi.io)"
-    export PATH="$HOME/bin:$PATH"
-fi
-
-# Initialize and apply dotfiles
-printf '==> Applying dotfiles...\n'
-chezmoi init --apply "$DOTFILES_REPO" --promptString flavor="$FLAVOR"
+# Install chezmoi, init, and apply in one shot
+printf '==> Installing chezmoi and applying dotfiles...\n'
+sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply "$DOTFILES_REPO" --promptString flavor="$FLAVOR"
 
 printf '\n==> Done! Flavor: %s\n' "$FLAVOR"
 if [ "$FLAVOR" = "work" ]; then
