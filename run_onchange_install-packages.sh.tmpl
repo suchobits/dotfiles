@@ -66,9 +66,8 @@ brew "xcbeautify"
 brew "xcode-build-server"
 brew "xcp"
 
-# Python (for various tooling)
-brew "python@3"
-brew "pipx"
+# Python (uv for fast package management)
+brew "uv"
 
 # Tmux dependencies for tmux-powerkit plugin
 brew "bash"
@@ -100,8 +99,8 @@ EOF
 # Mac App Store apps
 mas install 497799835 || true  # Xcode
 
-# iOS-specific tools (macOS only)
-pipx install pymobiledevice3 || true
+# iOS-specific tools (macOS only) — pymobiledevice3 for physical device support
+uv tool install pymobiledevice3 || true
 
 {{ else if eq .chezmoi.os "linux" -}}
 # === Linux: Homebrew (Linuxbrew) ===
@@ -119,7 +118,7 @@ brew install neovim tmux starship ripgrep fd fzf lazygit bat eza zoxide jq tree 
 brew install node pnpm
 brew install kotlin gradle ktlint
 brew install --cask zulu@17 2>/dev/null || true
-brew install python@3 pipx
+brew install uv
 brew install bash bc gawk
 
 # Fonts (Linux — use Homebrew cask if available, else manual)

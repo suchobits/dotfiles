@@ -91,9 +91,31 @@ Only install what you work with:
 | Config | Stack | Packages |
 |--------|-------|----------|
 | `nvim-web` | TypeScript | `node pnpm` |
-| `nvim-ios` | Swift (macOS) | `swiftformat swiftlint xcbeautify xcode-build-server` |
+| `nvim-ios` | Swift (macOS) | `swiftformat swiftlint xcbeautify xcode-build-server xcp` + see below |
 | `nvim-spring` | Kotlin/Spring | `kotlin gradle ktlint JetBrains/utils/kotlin-lsp`, `cask zulu@17` |
 | `nvim-android` | Kotlin/Android | same as spring + Android SDK |
+
+### iOS development extras (nvim-ios)
+
+```sh
+brew install swiftformat swiftlint xcbeautify xcode-build-server xcp uv
+```
+
+For physical device support (run/debug on real iPhones):
+
+```sh
+uv tool install pymobiledevice3
+```
+
+Per-project LSP setup (run once in project root):
+
+```sh
+# For workspace-based projects
+xcode-build-server config -scheme YourScheme -workspace *.xcworkspace
+
+# For xcodeproj-based projects
+xcode-build-server config -scheme YourScheme -project *.xcodeproj
+```
 
 ## Neovim Config Switcher
 
