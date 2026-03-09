@@ -100,7 +100,7 @@ EOF
 mas install 497799835 || true  # Xcode
 
 # iOS-specific tools (macOS only) — pymobiledevice3 for physical device support
-uv tool install pymobiledevice3 || true
+uv tool install --force pymobiledevice3 || true
 
 {{ else if eq .chezmoi.os "linux" -}}
 # === Linux: Homebrew (Linuxbrew) ===
