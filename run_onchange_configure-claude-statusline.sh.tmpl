@@ -1,0 +1,40 @@
+#!/bin/bash
+# chezmoi:template:hash
+
+# Ensure ~/.claude/settings.json has the statusLine config pointing to our script.
+# This is idempotent — it only adds/updates the statusLine block, leaving all
+# other settings (permissions, plugins, etc.) untouched.
+
+{{ if eq .chezmoi.os "darwin" -}}
+eval "$(/opt/homebrew/bin/brew shellenv)"
+{{ else if eq .chezmoi.os "linux" -}}
+eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+{{ end -}}
+
+SETTINGS="$HOME/.claude/settings.json"
+
+# Ensure directory exists
+mkdir -p "$HOME/.claude"
+
+# Create minimal settings.json if it doesn't exist
+if [ ! -f "$SETTINGS" ]; then
+    echo '{}' > "$SETTINGS"
+fi
+
+# Use jq to upsert the statusLine block (preserves all other keys)
+if ! command -v jq &> /dev/null; then
+    echo "jq not found — skipping Claude Code statusline config"
+    exit 0
+fi
+
+DESIRED_COMMAND="bash ~/.claude/statusline-command.sh"
+
+# Check if statusLine is already set correctly
+CURRENT="$(jq -r '.statusLine.command // ""' "$SETTINGS" 2>/dev/null)"
+if [ "$CURRENT" = "$DESIRED_COMMAND" ]; then
+    exit 0
+fi
+
+echo "Configuring Claude Code statusline..."
+UPDATED="$(jq --arg cmd "$DESIRED_COMMAND" '.statusLine = {"type": "command", "command": $cmd}' "$SETTINGS")"
+echo "$UPDATED" > "$SETTINGS"

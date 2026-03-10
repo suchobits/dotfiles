@@ -1,0 +1,32 @@
+#!/bin/bash
+# chezmoi:template:hash
+
+# Install/update ccusage — Claude Code usage tracker & statusline provider
+# Source: github.com/suchobits/claude-plane (public)
+
+CCUSAGE_DIR="$HOME/.local/share/ccusage"
+
+{{ if eq .chezmoi.os "darwin" -}}
+eval "$(/opt/homebrew/bin/brew shellenv)"
+{{ else if eq .chezmoi.os "linux" -}}
+eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+{{ end -}}
+
+# Ensure pnpm is available
+if ! command -v pnpm &> /dev/null; then
+    echo "pnpm not found — skipping ccusage install (run install-packages first)"
+    exit 0
+fi
+
+if [ ! -d "$CCUSAGE_DIR" ]; then
+    echo "Cloning ccusage..."
+    git clone https://github.com/suchobits/claude-plane.git "$CCUSAGE_DIR"
+else
+    echo "Updating ccusage..."
+    git -C "$CCUSAGE_DIR" pull --ff-only || true
+fi
+
+cd "$CCUSAGE_DIR"
+pnpm install
+pnpm --filter @ccusage/internal run build
+pnpm --filter ccusage run build
