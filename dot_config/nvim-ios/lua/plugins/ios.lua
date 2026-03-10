@@ -5,7 +5,6 @@ return {
     dependencies = {
       "MunifTanjim/nui.nvim",
       "nvim-telescope/telescope.nvim",
-      "nvim-tree/nvim-tree.lua", -- optional: syncs file changes to Xcode project
       "nvim-treesitter/nvim-treesitter",
       "mfussenegger/nvim-dap",
       { "rcarriga/nvim-dap-ui", dependencies = { "nvim-neotest/nvim-nio" } },
@@ -71,19 +70,21 @@ return {
     end,
   },
 
+  -- Treesitter — ensure Swift parser is installed
+  {
+    "nvim-treesitter/nvim-treesitter",
+    opts = {
+      ensure_installed = { "swift" },
+    },
+  },
+
   -- Swift LSP (sourcekit-lsp — comes with Xcode)
   {
     "neovim/nvim-lspconfig",
     opts = {
       servers = {
         sourcekit = {
-          root_dir = function(filename, _)
-            local util = require("lspconfig.util")
-            return util.root_pattern("buildServer.json")(filename)
-              or util.root_pattern("*.xcodeproj", "*.xcworkspace")(filename)
-              or util.root_pattern("compile_commands.json", "Package.swift")(filename)
-              or util.find_git_ancestor(filename)
-          end,
+          cmd = { "xcrun", "sourcekit-lsp" },
         },
       },
     },
