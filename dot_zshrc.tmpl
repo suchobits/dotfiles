@@ -27,8 +27,12 @@ export ANDROID_HOME="$HOME/Android/Sdk"
 export NDK_HOME="$ANDROID_HOME/ndk/$(ls -1 $ANDROID_HOME/ndk 2>/dev/null | head -1)"
 export PATH="$JAVA_HOME/bin:$ANDROID_HOME/platform-tools:$ANDROID_HOME/emulator:$PATH"
 
-# === Path ===
-export PATH="$HOME/.local/bin:$PATH"
+# === Glow (use ~/.config on macOS instead of ~/Library/Preferences) ===
+export GLOW_CONFIG_HOME="$HOME/.config/glow"
+
+# === Go ===
+export GOPATH="$HOME/go"
+export PATH="$GOPATH/bin:$HOME/.local/bin:$PATH"
 
 # === NVM ===
 export NVM_DIR="$HOME/.nvm"
@@ -69,6 +73,7 @@ alias nvim-web='NVIM_APPNAME=nvim-web nvim'
 alias nvim-ios='NVIM_APPNAME=nvim-ios nvim'
 alias nvim-spring='NVIM_APPNAME=nvim-spring nvim'
 alias nvim-android='NVIM_APPNAME=nvim-android nvim'
+alias nvim-go='NVIM_APPNAME=nvim-go nvim'
 alias v='nvim-web'
 
 vv() {

@@ -1,0 +1,6 @@
+# Glow config — Tokyo Night theme, show dotfiles
+style: "tokyo-night"
+mouse: false
+pager: false
+width: 80
+all: true
