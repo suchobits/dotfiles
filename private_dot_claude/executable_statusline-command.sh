@@ -19,6 +19,13 @@ if [ -z "$NODE" ]; then
 fi
 
 OUTPUT=$("$NODE" "$HOME/.local/share/ccusage/apps/ccusage/dist/index.js" statusline --quota)
+RC=$?
+
+# On error, pass through raw output
+if [ $RC -ne 0 ] || [[ "$OUTPUT" == *"❌"* ]]; then
+    echo "$OUTPUT"
+    exit $RC
+fi
 
 # Merge 🤖 model and 🧠 context sections into one
 # Input:  🤖 Opus | ... | 🧠 N/A

@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+# tmux-snapshot: dumps current tmux session state to ~/.config/tmux/sessions.txt
+# Called automatically via tmux hooks, or run manually anytime.
+
+STATE_FILE="${XDG_CONFIG_HOME:-$HOME/.config}/tmux/sessions.txt"
+
+if ! command -v tmux &>/dev/null; then
+  echo "tmux not found" > "$STATE_FILE"
+  exit 1
+fi
+
+if ! tmux info &>/dev/null 2>&1; then
+  echo "(no tmux server running)" > "$STATE_FILE"
+  exit 0
+fi
+
+{
+  echo "snapshot: $(date '+%Y-%m-%d %H:%M:%S')"
+  echo ""
+  tmux list-sessions -F "session: #{session_name}  windows: #{session_windows}  created: #{t:session_created}  attached: #{?session_attached,yes,no}" 2>/dev/null || echo "(no sessions)"
+  echo ""
+  tmux list-windows -a -F "  [#{session_name}] #I: #{window_name}  #{?window_active,(active),}  panes: #{window_panes}" 2>/dev/null
+  echo ""
+  tmux list-panes -a -F "    [#{session_name}] w#I p#{pane_index}: #{pane_current_command}  #{pane_current_path}  #{?pane_active,(active),}" 2>/dev/null
+} > "$STATE_FILE"

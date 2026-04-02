@@ -16,6 +16,7 @@ brew "starship"
 brew "zsh"
 
 # Core CLI tools
+brew "go"
 brew "ripgrep"
 brew "fd"
 brew "fzf"
@@ -51,6 +52,7 @@ cask "font-noto-sans-symbols-2"
 
 # Node.js ecosystem (for TypeScript dev)
 brew "node"
+brew "nvm"
 brew "pnpm"
 
 # JVM ecosystem (for Kotlin Spring Boot + Android)
@@ -118,8 +120,8 @@ if ! command -v brew &> /dev/null; then
 fi
 eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 
-brew install neovim tmux starship ripgrep fd fzf lazygit bat eza glow zoxide jq tree wget curl git gh git-delta
-brew install node pnpm
+brew install neovim tmux starship ripgrep fd fzf lazygit bat eza glow zoxide jq tree wget curl git gh git-delta go
+brew install node nvm pnpm
 brew install kotlin gradle ktlint
 brew install --cask zulu@17 2>/dev/null || true
 brew install uv
