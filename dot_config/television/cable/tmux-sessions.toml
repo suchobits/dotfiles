@@ -1,0 +1,17 @@
+[metadata]
+name = "tmux-sessions"
+description = "Fuzzy-pick and switch tmux sessions"
+requirements = ["tmux"]
+
+[source]
+command = "tmux list-sessions -F '#{session_name}\t#{session_windows} windows\t#{?session_attached,(attached),}'"
+display = "{split:\t:0} ({split:\t:1}) {split:\t:2}"
+output = "{split:\t:0}"
+
+[preview]
+command = "tmux capture-pane -t '{split:\t:0}' -p 2>/dev/null || echo 'No preview available'"
+
+[actions.kill]
+description = "Kill the selected session"
+command = "tmux kill-session -t '{split:\t:0}'"
+mode = "fork"

@@ -50,6 +50,17 @@ export PATH="$HOME/.opencode/bin:$PATH"
 # === LM Studio CLI ===
 export PATH="$PATH:$HOME/.lmstudio/bin"
 
+# === Bun ===
+export PATH="$HOME/.bun/bin:$PATH"
+
+# pnpm
+export PNPM_HOME="$HOME/Library/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end
+
 # === Starship ===
 eval "$(starship init zsh)"
 
@@ -64,6 +75,15 @@ export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS \
   --color=fg+:#c0caf5,bg+:#292e42,hl+:#ff9e64 \
   --color=info:#7aa2f7,prompt:#7dcfff,pointer:#7dcfff \
   --color=marker:#9ece6a,spinner:#9ece6a,header:#9ece6a"
+
+# === Secrets from Keychain ===
+{{ if eq .chezmoi.os "darwin" -}}
+# Managed by `keysave` — add entries below via: keysave KEY_NAME
+export STITCH_API_KEY=$(security find-generic-password -a "$USER" -s "STITCH_API_KEY" -w 2>/dev/null)
+export ROOKERY_GEMINI_API_KEY="$(security find-generic-password -a "$USER" -s "rookery-mkt-imagen" -w 2>/dev/null)"
+export FIGMA_ACCESS_TOKEN="$(security find-generic-password -a "$USER" -s "figma-console-mcp" -w 2>/dev/null)"
+export IDEOGRAM_API_KEY="$(security find-generic-password -a "$USER" -s "ideogram-api-key" -w 2>/dev/null)"
+{{ end -}}
 
 # === Aliases ===
 source ~/.shell_aliases

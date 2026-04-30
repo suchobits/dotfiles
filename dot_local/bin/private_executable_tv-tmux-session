@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# tv-tmux-session: fuzzy-pick a tmux session with television and switch to it
+session="$(tv tmux-sessions)"
+[ -n "$session" ] && tmux switch-client -t "$session"

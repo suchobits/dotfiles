@@ -30,6 +30,58 @@ alias cme='chezmoi edit'
 # === Claude ===
 alias cdsp="claude --dangerously-skip-permissions"
 
+# === Secrets (macOS Keychain → zshrc via chezmoi) ===
+keysave() {
+  local key="$1"
+  if [[ -z "$key" ]]; then
+    echo "usage: keysave KEY_NAME" >&2
+    return 1
+  fi
+  if [[ "$(uname)" != "Darwin" ]]; then
+    echo "keysave: macOS only (uses /usr/bin/security)" >&2
+    return 1
+  fi
+
+  local src
+  src="$(chezmoi source-path ~/.zshrc)"
+  if [[ -z "$src" || ! -f "$src" ]]; then
+    echo "keysave: could not locate chezmoi source for ~/.zshrc" >&2
+    return 1
+  fi
+
+  # Bail early if ~/.zshrc has drifted from chezmoi source — don't clobber.
+  if [[ -n "$(chezmoi diff ~/.zshrc 2>/dev/null)" ]]; then
+    echo "keysave: ~/.zshrc differs from chezmoi source. Resolve first:" >&2
+    echo "  chezmoi diff ~/.zshrc          # review drift" >&2
+    echo "  chezmoi merge ~/.zshrc         # merge into source, or" >&2
+    echo "  chezmoi apply --force ~/.zshrc # discard target changes" >&2
+    return 1
+  fi
+
+  security delete-generic-password -a "$USER" -s "$key" >/dev/null 2>&1
+  security add-generic-password -a "$USER" -s "$key" -w || return 1
+
+  local line="export ${key}=\$(security find-generic-password -a \"\$USER\" -s \"${key}\" -w 2>/dev/null)"
+  if grep -qE "^export ${key}=" "$src"; then
+    echo "keysave: $key export already present in $src"
+  else
+    local marker="# === Aliases ==="
+    if grep -qF "$marker" "$src"; then
+      local tmp="${src}.keysave.$$"
+      awk -v line="$line" -v marker="$marker" '
+        $0 == marker && !done { print line; print ""; done=1 }
+        { print }
+      ' "$src" > "$tmp" && mv "$tmp" "$src"
+      echo "keysave: inserted export for $key above Aliases section in $src"
+    else
+      printf '%s\n' "$line" >> "$src"
+      echo "keysave: appended export for $key to $src (marker not found)"
+    fi
+  fi
+
+  chezmoi apply ~/.zshrc
+}
+
 # === Misc ===
 alias reload='source ~/.zshrc'
 alias path='echo -e ${PATH//:/\\n}'
