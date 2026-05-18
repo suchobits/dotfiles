@@ -17,7 +17,7 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
   spec = {
     { "LazyVim/LazyVim", import = "lazyvim.plugins" },
-    { import = "lazyvim.plugins.extras.lang.kotlin" },
+    -- kotlin extra disabled — using JetBrains kotlin-lsp instead (see plugins/android.lua)
     { import = "lazyvim.plugins.extras.editor.harpoon2" },
     { import = "lazyvim.plugins.extras.editor.neo-tree" },
     { import = "plugins" },
