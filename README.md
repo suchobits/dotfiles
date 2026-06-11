@@ -7,11 +7,7 @@ Cross-platform dotfiles managed by [chezmoi](https://www.chezmoi.io/). Tokyo Nig
 Installs chezmoi, applies dotfiles, and runs all install scripts (Homebrew, packages, fonts, etc.):
 
 ```sh
-# Personal (default — everything)
 sh -c "$(curl -fsLS https://raw.githubusercontent.com/suchobits/dotfiles/main/install.sh)"
-
-# Work (skip personal apps + AI editors/agents)
-sh -c "$(curl -fsLS https://raw.githubusercontent.com/suchobits/dotfiles/main/install.sh)" -- --flavor work
 ```
 
 ## Dotfiles Only (existing machine)

@@ -13,7 +13,7 @@ export VISUAL="nvim"
 export LANG="en_US.UTF-8"
 
 {{ if eq .chezmoi.os "darwin" -}}
-export JAVA_HOME=$(/usr/libexec/java_home -v 17 2>/dev/null)
+export JAVA_HOME=$(/usr/libexec/java_home -v 21 2>/dev/null)
 {{ else -}}
 export JAVA_HOME="/usr/lib/jvm/zulu-17"
 {{ end -}}
@@ -85,16 +85,22 @@ export FIGMA_ACCESS_TOKEN="$(security find-generic-password -a "$USER" -s "figma
 export IDEOGRAM_API_KEY="$(security find-generic-password -a "$USER" -s "ideogram-api-key" -w 2>/dev/null)"
 {{ end -}}
 
+export TAVILY_API_KEY=$(security find-generic-password -a "$USER" -s "TAVILY_API_KEY" -w 2>/dev/null)
+
+export OPENROUTER_MANAGEMENT_KEY=$(security find-generic-password -a "$USER" -s "OPENROUTER_MANAGEMENT_KEY" -w 2>/dev/null)
+
+export BRAVE_API_KEY=$(security find-generic-password -a "$USER" -s "BRAVE_API_KEY" -w 2>/dev/null)
+
 # === Aliases ===
 source ~/.shell_aliases
 
 # === Neovim Config Switcher ===
-alias nvim-web='NVIM_APPNAME=nvim-web nvim'
-alias nvim-ios='NVIM_APPNAME=nvim-ios nvim'
-alias nvim-spring='NVIM_APPNAME=nvim-spring nvim'
-alias nvim-android='NVIM_APPNAME=nvim-android nvim'
-alias nvim-go='NVIM_APPNAME=nvim-go nvim'
-alias nvim='NVIM_APPNAME=nvim-web nvim'
+alias nvim='NVIM_APPNAME=nvim-web command nvim'
+alias nvim-web='NVIM_APPNAME=nvim-web command nvim'
+alias nvim-ios='NVIM_APPNAME=nvim-ios command nvim'
+alias nvim-spring='NVIM_APPNAME=nvim-spring command nvim'
+alias nvim-android='NVIM_APPNAME=nvim-android command nvim'
+alias nvim-go='NVIM_APPNAME=nvim-go command nvim'
 alias v='nvim'
 
 vv() {

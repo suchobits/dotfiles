@@ -1,5 +1,4 @@
 # .chezmoi.toml.tmpl
 [data]
-    flavor = "{{ promptStringOnce . "flavor" "Flavor (personal/work)" | default "personal" }}"
     is_macos = {{ eq .chezmoi.os "darwin" }}
     is_linux = {{ eq .chezmoi.os "linux" }}

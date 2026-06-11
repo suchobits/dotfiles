@@ -11,7 +11,6 @@ return {
     opts = {
       servers = {
         kotlin_lsp = { enabled = false },
-        kotlin_language_server = { enabled = false },
         lemminx = {},
       },
     },
@@ -44,8 +43,9 @@ return {
             function() return vim.api.nvim_buf_get_name(0) end,
             "--config",
             function()
-              local config = vim.fn.findfile("detekt.yml", ".;")
-              return config ~= "" and config or vim.fn.stdpath("config") .. "/detekt.yml"
+              local dir = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(0), ":h")
+              return vim.fs.find("detekt.yml", { path = dir, upward = true })[1]
+                or "detekt.yml"
             end,
             "--report", "xml:/dev/stdout",
           },

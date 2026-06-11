@@ -1,0 +1,13 @@
+eval "$(starship init bash)"
+. "$HOME/.cargo/env"
+
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:/Users/lrs/.lmstudio/bin"
+# End of LM Studio CLI section
+
+
+if command -v wt >/dev/null 2>&1; then eval "$(command wt config shell init bash)"; fi
+
+
+# Added by Antigravity CLI installer
+export PATH="/Users/lrs/.local/bin:$PATH"
