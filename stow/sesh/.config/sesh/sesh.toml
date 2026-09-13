@@ -1,0 +1,40 @@
+# sesh - https://github.com/joshmedeski/sesh
+#
+# sesh needs no config to be useful: `prefix + s` in tmux fuzzy-finds live
+# tmux sessions + zoxide directories and creates a session on connect.
+# This file adds declarative named sessions (the part tmux-resurrect used to
+# do, minus the snapshot fragility): a fixed name, a path, and a command to
+# run when the session is first created.
+#
+# Full option list: https://github.com/joshmedeski/sesh#configuration
+
+# Runs in every freshly-created session that has no startup_command of its own.
+# Left off on purpose - not every session wants an editor.
+# [default_session]
+# startup_command = "nvim"
+
+# Session names matching these are hidden from the picker.
+blacklist = ["scratch"]
+
+
+[[session]]
+name = "dotfiles"
+path = "~/Developer/repos/dotfiles"
+startup_command = "nvim"
+
+# --- more examples, uncomment and adjust ------------------------------------
+
+# [[session]]
+# name = "second-brain"
+# path = "~/Developer/second-brain"
+# startup_command = "nvim"
+
+# [[session]]
+# name = "nixpkgs"
+# path = "~/Developer/repos/nixpkgs"
+
+# A session can open several windows instead of a single startup_command:
+# [[session]]
+# name = "app"
+# path = "~/Developer/app"
+# windows = ["nvim", "server", "shell"]

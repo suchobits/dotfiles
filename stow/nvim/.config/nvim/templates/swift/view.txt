@@ -1,0 +1,18 @@
+//
+//  {filename}.swift
+//  {group}
+//
+//  Created by {author} on {date}.
+//
+
+import SwiftUI
+
+struct {filename}: View {
+    var body: some View {
+        {cursor}
+    }
+}
+
+#Preview {
+    {filename}()
+}

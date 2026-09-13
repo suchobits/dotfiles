@@ -1,0 +1,14 @@
+# Daily-driver terminal multiplexer (replaces tmux). See stow/README.md.
+
+onboarding = false
+
+[keys]
+# Matches the tmux prefix this replaces - same muscle memory.
+prefix = "ctrl+s"
+
+[theme]
+# Inherit Ghostty's Vira Carbon palette instead of duplicating its hex
+# values here - "terminal" makes herdr UI colors follow the host
+# terminal's ANSI palette (stow/ghostty/.config/ghostty/themes/Vira-Theme-Carbon).
+name = "vesper"
+auto_switch = false

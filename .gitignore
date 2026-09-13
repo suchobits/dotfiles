@@ -1,0 +1,7 @@
+.DS_Store
+result
+result-*
+
+# Compiled spell files - generated from spell/*.add by Vim
+stow/nvim/.config/nvim/spell/*.spl
+stow/nvim/.config/nvim/spell/*.sug

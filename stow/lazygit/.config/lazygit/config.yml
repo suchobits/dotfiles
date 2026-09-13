@@ -1,0 +1,9 @@
+# `o` on a file otherwise runs macOS `open`, which hands it to the
+# LaunchServices default GUI app (Antigravity, VS Code, ...). Rebind it
+# to edit in $EDITOR in a subprocess, same as `e`.
+customCommands:
+  - key: o
+    description: open file in $EDITOR
+    context: files, commitFiles
+    command: $EDITOR -- {{.SelectedPath | quote}}
+    output: terminal

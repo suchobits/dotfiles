@@ -1,0 +1,10 @@
+//
+//  {filename}.swift
+//  {group}
+//
+//  Created by {author} on {date}.
+//
+
+import Foundation
+
+{cursor}

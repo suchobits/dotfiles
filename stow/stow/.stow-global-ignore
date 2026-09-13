@@ -1,0 +1,29 @@
+# ~/.stow-global-ignore - consulted for every `stow` run that has no
+# per-package .stow-local-ignore. Patterns are Perl regexes matched
+# against each path within a package.
+#
+# NOTE: the first ignore list Stow finds REPLACES its built-in defaults,
+# so the defaults worth keeping are repeated here alongside the macOS
+# metadata (.DS_Store etc.) that was causing restow conflicts.
+
+# macOS / Finder junk
+\.DS_Store
+\._.*
+\.AppleDouble
+\.LSOverride
+\.Spotlight-V100
+\.Trashes
+
+# VCS metadata
+\.git
+\.gitignore
+\.gitmodules
+
+# editor backup / autosave files
+.*~
+\#.*\#
+
+# repo docs (only match at a package root)
+^/README.*
+^/LICENSE.*
+^/COPYING

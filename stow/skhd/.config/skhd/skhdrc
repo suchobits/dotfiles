@@ -1,0 +1,10 @@
+# skhd hotkey bindings. Reloaded automatically on save.
+# Syntax: https://github.com/koekeishiya/skhd
+#
+#   mod - key : command
+#
+# Modifiers: cmd, alt, ctrl, shift, hyper (cmd+alt+ctrl+shift), meh
+# List key names: `skhd --key <press a key>`
+
+# Launchers
+alt - o : open -a Obsidian
