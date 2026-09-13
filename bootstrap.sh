@@ -52,10 +52,10 @@ git -C "$REPO_DIR" add -A
 
 log "Running darwin-rebuild switch"
 if command -v darwin-rebuild >/dev/null 2>&1; then
-  sudo darwin-rebuild switch --flake "$REPO_DIR#MBP"
+  sudo MAS_NO_AUTO_INDEX=1 darwin-rebuild switch --flake "$REPO_DIR#MBP"
 else
   # darwin-rebuild doesn't exist on PATH yet on a fresh machine.
-  sudo nix run --extra-experimental-features 'nix-command flakes' \
+  sudo MAS_NO_AUTO_INDEX=1 nix run --extra-experimental-features 'nix-command flakes' \
     nix-darwin/master#darwin-rebuild -- switch --flake "$REPO_DIR#MBP"
 fi
 

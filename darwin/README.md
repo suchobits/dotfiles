@@ -40,8 +40,10 @@ darwin-rebuild build --flake ~/Developer/repos/dotfiles#MBP
 Activate - writes `/etc`, `/Library`, and launchd, and runs `brew` and `mas`:
 
 ```sh
-sudo darwin-rebuild switch --flake ~/Developer/repos/dotfiles#MBP
+sudo MAS_NO_AUTO_INDEX=1 darwin-rebuild switch --flake ~/Developer/repos/dotfiles#MBP
 ```
+
+`MAS_NO_AUTO_INDEX=1` stops `mas`'s own Spotlight-reindex diagnostic text (printed right after installing a large app not yet indexed, e.g. Xcode) from bleeding into nix-darwin's `programs.mas` cleanup loop, which parses that same output for installed bundle IDs - without it, cleanup word-splits the diagnostic text into garbage IDs and harmlessly no-ops trying to "uninstall" each one.
 
 Quit any GUI app whose cask is installing or updating first.
 Homebrew cannot replace the files of a running app.
