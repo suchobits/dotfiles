@@ -26,6 +26,11 @@ in
   # key already present (logging "Duplicate Entry Was Skipped") and would
   # ignore later edits to ${themeName}.terminal. Delete on a missing
   # entry exits non-zero, hence the `|| true`.
+  #
+  # Merge itself is also `|| true`: ${themeFile} lives in the private
+  # dotfiles-vira repo, which a fresh machine hasn't cloned yet. A missing
+  # file shouldn't fail the whole switch - clone dotfiles-vira and switch
+  # again to pick up the theme.
   system.activationScripts.postActivation.text = ''
     echo "installing Terminal theme..." >&2
     sudo --set-home -u ${user} /usr/libexec/PlistBuddy \
@@ -33,7 +38,7 @@ in
     sudo --set-home -u ${user} /usr/libexec/PlistBuddy \
       -c "Add :'Window Settings':'${themeName}' dict" "${terminalPlist}"
     sudo --set-home -u ${user} /usr/libexec/PlistBuddy \
-      -c "Merge ${themeFile} :'Window Settings':'${themeName}'" "${terminalPlist}"
+      -c "Merge ${themeFile} :'Window Settings':'${themeName}'" "${terminalPlist}" || true
     killall cfprefsd 2>/dev/null || true
   '';
 }

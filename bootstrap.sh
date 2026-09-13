@@ -70,6 +70,11 @@ Done. Remaining steps this script can't do for you:
 
   - Secrets: restart your shell, then run 'secret-add NAME' for each name
     'secret-list' prints (values live only in Keychain, never in git).
+  - Theme: clone the private dotfiles-vira repo to
+    ~/Developer/repos/dotfiles-vira (needs GitHub auth - 'gh auth login'
+    after this script installs gh, or an existing SSH key). nvim/ghostty/
+    starship/tmux pick it up on next launch; Terminal.app needs one more
+    'sudo darwin-rebuild switch --flake $REPO_DIR#MBP'.
   - Mac App Store apps install only once you're signed into the App Store app;
     sign in, then re-run: sudo darwin-rebuild switch --flake $REPO_DIR#MBP
   - Manually installed apps (no cask/MAS entry) - see darwin/README.md's
