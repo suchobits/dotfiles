@@ -61,6 +61,14 @@ fi
 
 # --- Stow ---
 export PATH="/run/current-system/sw/bin:$PATH"
+
+# Force ~/.claude to already be a real directory before stowing: the
+# claude package only tracks CLAUDE.md, but if ~/.claude doesn't exist
+# yet, stow folds it into one whole-directory symlink instead of linking
+# CLAUDE.md alone - every write Claude Code makes afterward (history,
+# sessions, settings, cache) then lands inside this git repo.
+mkdir -p "$HOME/.claude"
+
 log "Stowing dotfiles"
 (cd "$REPO_DIR/stow" && stow -t "$HOME" */)
 
