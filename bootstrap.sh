@@ -62,12 +62,18 @@ fi
 # --- Stow ---
 export PATH="/run/current-system/sw/bin:$PATH"
 
-# Force ~/.claude to already be a real directory before stowing: the
-# claude package only tracks CLAUDE.md, but if ~/.claude doesn't exist
-# yet, stow folds it into one whole-directory symlink instead of linking
-# CLAUDE.md alone - every write Claude Code makes afterward (history,
-# sessions, settings, cache) then lands inside this git repo.
-mkdir -p "$HOME/.claude"
+# Force every package's directory target to already be real before
+# stowing. Stow folds a package into one whole-directory symlink
+# whenever the target doesn't already exist, instead of linking its
+# tracked files individually - and several of these tools write
+# untracked runtime state (history, sessions, logs, caches) directly
+# into that same directory. If it's already a real (if empty)
+# directory, stow is forced to link file-by-file instead, so those
+# writes land as ordinary local files rather than inside this repo.
+for dir in .claude .config/ghostty .config/herdr .config/lazygit \
+  .config/nvim .config/sesh .config/skhd .config/television .config/zsh; do
+  mkdir -p "$HOME/$dir"
+done
 
 log "Stowing dotfiles"
 (cd "$REPO_DIR/stow" && stow -t "$HOME" */)
