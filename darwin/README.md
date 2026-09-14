@@ -111,8 +111,8 @@ Reinstall them by hand after a fresh setup; `zap` leaves them alone since they l
 - `skhd.nix` sets `services.skhd`; bindings are in `stow/skhd/.config/skhd/skhdrc`.
   The module defines a user agent (`launchd.user.agents.skhd`), not covered by `launchd.nix`'s bootstrap loop; a fresh install may need a re-login to load.
   `skhdConfig` is left unset, so skhd runs without `-c` and reads `~/.config/skhd/skhdrc`; the module still writes an unused empty `/etc/skhdrc`.
-  skhd needs Accessibility permission for the store-path binary (`readlink -f "$(command -v skhd)"`); without it, bound keys pass through as their raw keystroke.
-  The path changes on `pkgs.skhd` updates, so re-grant after a bump, then `launchctl kickstart -k gui/$(id -u)/org.nixos.skhd`.
+  skhd needs Accessibility permission for `~/.local/bin/skhd`; without it, bound keys pass through as their raw keystroke.
+  `skhd.nix` copies the binary there on every switch and points the agent at that fixed path instead of the store path, so the grant survives `pkgs.skhd` updates - the store path used to change per update, and macOS never cleaned up the stale per-path grant, so they piled up in Privacy & Security > Accessibility.
 - Mac App Store apps cannot be removed by automation, including as root; macOS protects them.
   Remove via Finder or Launchpad.
 - `defaults.nix`'s `AppleIconAppearanceTheme`/`AppleIconAppearanceTintColor`/`NSGlassDiffusionSetting` (macOS 26's Liquid Glass icon & widget style) have no typed nix-darwin option yet; they're raw `NSGlobalDomain` keys read back off a machine with the setting applied, set via `CustomUserPreferences`.

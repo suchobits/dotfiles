@@ -1,18 +1,34 @@
-{ pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
+let
+  user = config.system.primaryUser;
+  homeDir = "/Users/${user}";
+
+  # The module's ProgramArguments defaults to the store path, which
+  # changes every update; macOS grants Accessibility per-path, so each
+  # update piles up a new, never-cleaned-up entry. Copy the binary here
+  # instead so the granted path never changes.
+  stableBin = "${homeDir}/.local/bin/skhd";
+in
 {
-  # Simple hotkey daemon for macOS. The module defines its own user
-  # launchd agent (org.nixos.skhd), so this needs no entry in
-  # launchd.nix.
-  #
-  # skhdConfig is left unset: the module then starts skhd without a `-c`
-  # flag, so it falls back to its own lookup and reads
-  # ~/.config/skhd/skhdrc, stowed from stow/skhd/ like the other
-  # dotfiles. (The module still writes an unused empty /etc/skhdrc.)
-  #
+  # Own launchd agent (org.nixos.skhd); no entry needed in launchd.nix.
+  # skhdConfig is left unset, so skhd reads ~/.config/skhd/skhdrc
+  # (stow/skhd/) instead of the module's /etc/skhdrc.
   # Accessibility permission: see darwin/README.md "Notes".
   services.skhd = {
     enable = true;
     package = pkgs.skhd;
   };
+
+  # mkForce: a plain assignment would concatenate with, not replace, the
+  # module's own ProgramArguments.
+  launchd.user.agents.skhd.serviceConfig.ProgramArguments = lib.mkForce [ stableBin ];
+
+  # preActivation: must land before userLaunchd reloads org.nixos.skhd,
+  # or the first switch starts the agent against a missing file.
+  system.activationScripts.preActivation.text = ''
+    echo "installing skhd to stable path..." >&2
+    sudo --set-home -u ${user} mkdir -p "${homeDir}/.local/bin"
+    sudo --set-home -u ${user} install -m 755 ${pkgs.skhd}/bin/skhd "${stableBin}"
+  '';
 }
