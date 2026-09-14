@@ -12,7 +12,7 @@ Dotfiles are separate - see [../stow/README.md](../stow/README.md).
 | `packages.nix` | CLI tools (`environment.systemPackages`), plus npm-only tools via activation script |
 | `homebrew.nix` | GUI apps (`homebrew.casks`) |
 | `mas.nix` | Mac App Store apps (`programs.mas`) |
-| `defaults.nix` | macOS settings (`system.defaults`), plus Terminal theme via activation script |
+| `defaults.nix` | macOS settings (`system.defaults`): dark mode, icon/widget style, Dock; Terminal theme and desktop wallpaper via activation script |
 | `launchd.nix` | Scheduled jobs (`launchd.agents`) |
 | `skhd.nix` | Hotkey daemon (`services.skhd`); bindings stowed from `stow/skhd/` |
 | `kotlin-lsp.nix` | Pinned JetBrains kotlin-lsp download via activation script (not in nixpkgs, not a cask) |
@@ -115,3 +115,6 @@ Reinstall them by hand after a fresh setup; `zap` leaves them alone since they l
   The path changes on `pkgs.skhd` updates, so re-grant after a bump, then `launchctl kickstart -k gui/$(id -u)/org.nixos.skhd`.
 - Mac App Store apps cannot be removed by automation, including as root; macOS protects them.
   Remove via Finder or Launchpad.
+- `defaults.nix`'s `AppleIconAppearanceTheme`/`AppleIconAppearanceTintColor`/`NSGlassDiffusionSetting` (macOS 26's Liquid Glass icon & widget style) have no typed nix-darwin option yet; they're raw `NSGlobalDomain` keys read back off a machine with the setting applied, set via `CustomUserPreferences`.
+  A future nix-darwin release may add typed options that conflict with writing these directly.
+- The desktop wallpaper (`darwin/resources/night-watch.png`) is applied via `desktoppr` (`packages.nix`) in `defaults.nix`'s `postActivation`, wrapped in `launchctl asuser` since changing the live picture needs the user's WindowServer session, not just `sudo -u`.

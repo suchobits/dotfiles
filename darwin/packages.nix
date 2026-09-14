@@ -17,6 +17,7 @@ in
     cocoapods
     codex
     delta
+    desktoppr # scriptingosx/desktoppr: sets the desktop picture (darwin/defaults.nix postActivation)
     eza
     fd
     ffmpeg
