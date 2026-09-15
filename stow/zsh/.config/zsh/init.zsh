@@ -5,16 +5,27 @@
 # "vi"); set this before the tool evals so their widgets bind correctly.
 bindkey -e
 
-# Completion system. darwin/zsh.nix turns off nix-darwin's own
-# unconditional compinit (its compaudit security scan of $fpath is real
-# cost on every shell with Nix's many profile dirs); only pay for that
-# scan once a day, trust the dump otherwise.
+# Completion system. darwin/zsh.nix disables nix-darwin's own compinit
+# (its compaudit scan of $fpath is real cost with Nix's many profile
+# dirs); audit once a day instead. A stamp file tracks that, not the
+# dump's mtime - compinit only bumps the dump's mtime when $fpath's
+# file count changes, which isn't daily, so mtime-gating would re-audit
+# every shell once stale. Lock dir: one audit at a time, not one per
+# concurrently-starting shell. zcompile: cache the dump as bytecode.
 autoload -Uz compinit
-if [[ -n "${ZDOTDIR:-$HOME}"/.zcompdump(#qN.mh+24) ]]; then
-  compinit
+_compdump="${ZDOTDIR:-$HOME}/.zcompdump"
+_compstamp="$_compdump.audited"
+_complock="$_compdump.lock"
+[[ -d "$_complock"(#qNmm+1) ]] && rmdir "$_complock" 2>/dev/null
+if [[ ! -e "$_compstamp" || -n "$_compstamp"(#qN.mh+24) ]] && mkdir "$_complock" 2>/dev/null; then
+  compinit -d "$_compdump"
+  touch "$_compstamp"
+  zcompile "$_compdump" 2>/dev/null
+  rmdir "$_complock"
 else
-  compinit -C
+  compinit -C -d "$_compdump"
 fi
+unset _compdump _compstamp _complock
 
 # FZF key bindings and fuzzy completion
 command -v fzf &> /dev/null && eval "$(fzf --zsh)"
