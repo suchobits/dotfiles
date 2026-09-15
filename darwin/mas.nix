@@ -18,16 +18,20 @@
       Scrivener3 = 1310686187;
       Amphetamine = 937984704;
 
-      # mas can never install/update these - SIP blocks writes into an
+      # mas can never install/update this - SIP blocks writes into an
       # installed MAS app's bundle even as root (verified directly).
-      # Declared anyway so `cleanup` won't remove them; the failed
-      # install attempt below is harmless (`|| true`) every switch.
+      # Declared anyway so `cleanup` won't remove it; the install attempt
+      # below is skipped every switch since `mas list` already shows it.
       TestFlight = 899247664;
-      Xcode = 497799835;
     };
   };
 
   # WhatsApp is a cask instead (see homebrew.nix); MAS id is 310633997.
   # `cleanup` cannot remove a MAS app macOS protects; those are removed
   # manually via Finder or Launchpad.
+
+  # Xcode (497799835): same SIP block as TestFlight, but mas never gets a
+  # receipt for it, so it's never "already installed" and declaring it
+  # would redownload the full ~3GB every switch, forever. Left undeclared;
+  # updates via macOS's own background App Store updater instead.
 }
