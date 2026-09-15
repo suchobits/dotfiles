@@ -12,19 +12,26 @@ bindkey -e
 # file count changes, which isn't daily, so mtime-gating would re-audit
 # every shell once stale. Lock dir: one audit at a time, not one per
 # concurrently-starting shell. zcompile: cache the dump as bytecode.
+#
+# The (#q...) glob qualifiers below need extendedglob or they silently
+# stop qualifying and "-n ..." is just true - scope it to this closure
+# so it doesn't change pattern matching for the rest of the shell.
 autoload -Uz compinit
 _compdump="${ZDOTDIR:-$HOME}/.zcompdump"
 _compstamp="$_compdump.audited"
 _complock="$_compdump.lock"
-[[ -d "$_complock"(#qNmm+1) ]] && rmdir "$_complock" 2>/dev/null
-if [[ ! -e "$_compstamp" || -n "$_compstamp"(#qN.mh+24) ]] && mkdir "$_complock" 2>/dev/null; then
-  compinit -d "$_compdump"
-  touch "$_compstamp"
-  zcompile "$_compdump" 2>/dev/null
-  rmdir "$_complock"
-else
-  compinit -C -d "$_compdump"
-fi
+() {
+  setopt local_options extendedglob
+  [[ -d "$_complock"(#qNmm+1) ]] && rmdir "$_complock" 2>/dev/null
+  if [[ ! -e "$_compstamp" || -n "$_compstamp"(#qN.mh+24) ]] && mkdir "$_complock" 2>/dev/null; then
+    compinit -d "$_compdump"
+    touch "$_compstamp"
+    zcompile "$_compdump" 2>/dev/null
+    rmdir "$_complock"
+  else
+    compinit -C -d "$_compdump"
+  fi
+}
 unset _compdump _compstamp _complock
 
 # FZF key bindings and fuzzy completion
