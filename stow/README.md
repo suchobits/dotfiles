@@ -35,7 +35,6 @@ There are also shell shortcuts (from `zsh`'s `aliases.zsh`, so they work from an
 | `television` | `~/.config/television/` |
 | `lazygit` | `~/.config/lazygit/config.yml` (read via `$LG_CONFIG_FILE`, set in `zsh`) |
 | `zsh` | `~/.zshrc`, `~/.config/zsh/` |
-| `skhd` | `~/.config/skhd/skhdrc` |
 | `claude` | `~/.claude/CLAUDE.md` (global agent instructions; the rest of `~/.claude/` is machine-local state, left untracked) |
 | `stow` | `~/.stow-global-ignore` |
 | `ssh` | `~/.ssh/config` (includes `~/.ssh/config.local`, untracked, for actual hosts) |

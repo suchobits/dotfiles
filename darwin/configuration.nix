@@ -8,7 +8,6 @@
     ./defaults.nix
     ./launchd.nix
     ./zsh.nix
-    ./skhd.nix
     ./kotlin-lsp.nix
     ./xcode-build-server.nix
   ];

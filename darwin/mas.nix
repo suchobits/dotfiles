@@ -15,18 +15,17 @@
       Keynote = 361285480;
       Numbers = 361304891;
       Pages = 361309726;
-      Xcode = 497799835;
       Scrivener3 = 1310686187;
       Amphetamine = 937984704;
 
-      # `mas`/`installer` can't install, upgrade, or uninstall this one -
+      # `mas`/`installer` can't install, upgrade, or uninstall these -
       # "Operation not permitted" moving files into /Applications even as
       # root, a SIP-level restriction the App Store GUI client has but the
       # CLI path doesn't. Declared anyway so `cleanup` doesn't fight a
-      # manually-installed copy on every switch; on a machine that doesn't
-      # have it yet, the install attempt below just fails harmlessly
-      # (`|| true`) until you install it by hand from the App Store app.
+      # manually-installed copy; the install attempt below just fails
+      # harmlessly (`|| true`) every switch instead of aborting it.
       TestFlight = 899247664;
+      Xcode = 497799835;
     };
   };
 

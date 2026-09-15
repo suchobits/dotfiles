@@ -93,6 +93,4 @@ Done. Remaining steps this script can't do for you:
     sign in, then re-run: sudo darwin-rebuild switch --flake $REPO_DIR#MBP
   - Manually installed apps (no cask/MAS entry) - see darwin/README.md's
     "Manually installed apps" table.
-  - Some launchd agents (e.g. skhd) need a re-login to load - see
-    darwin/README.md Notes.
 EOF
