@@ -113,6 +113,8 @@ Reinstall them by hand after a fresh setup; `zap` leaves them alone since they l
   `skhdConfig` is left unset, so skhd runs without `-c` and reads `~/.config/skhd/skhdrc`; the module still writes an unused empty `/etc/skhdrc`.
   skhd needs Accessibility permission for `~/.local/bin/skhd`; without it, bound keys pass through as their raw keystroke.
   `skhd.nix` copies the binary there on every switch and points the agent at that fixed path instead of the store path, so the grant survives `pkgs.skhd` updates - the store path used to change per update, and macOS never cleaned up the stale per-path grant, so they piled up in Privacy & Security > Accessibility.
+  Path alone wasn't enough: TCC also keys the grant off the code signature, and nix's ad-hoc signature doesn't survive revalidation (seen after a macOS upgrade reboot).
+  `skhd.nix` re-signs the stable binary each switch with a real dev identity (`codesignIdentity`), anchoring the grant to its Team ID instead; non-fatal if that identity is missing.
 - Mac App Store apps cannot be removed by automation, including as root; macOS protects them.
   Remove via Finder or Launchpad.
 - `defaults.nix`'s `AppleIconAppearanceTheme`/`AppleIconAppearanceTintColor`/`NSGlassDiffusionSetting` (macOS 26's Liquid Glass icon & widget style) have no typed nix-darwin option yet; they're raw `NSGlobalDomain` keys read back off a machine with the setting applied, set via `CustomUserPreferences`.
