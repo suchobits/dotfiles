@@ -13,6 +13,7 @@ in
     ast-grep
     bat
     beads
+    btop # top/htop replacement
     bun
     cocoapods
     codex
@@ -30,6 +31,7 @@ in
     jqp
     just
     just-lsp
+    lazydocker # docker GUI (lzd alias)
     lazygit
     libpq
     librsvg
@@ -49,6 +51,7 @@ in
     swiftlint # nvim swift linting (nvim-lint)
     tart
     television # `tv` fuzzy finder: zsh (tv init) + tmux popups + sesh picker
+    tldr # man pages replacement (help alias)
     tmux
     tree-sitter
     uv
@@ -56,6 +59,7 @@ in
     watchman
     xcbeautify # formats xcodebuild logs for xcodebuild.nvim
     xcodegen # generate .xcodeproj from project.yml (iOS projects + ios-starter template)
+    yazi # Finder replacement (y alias)
     zoxide
     zulu21
   ];
