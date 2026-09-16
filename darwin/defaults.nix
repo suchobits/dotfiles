@@ -45,7 +45,7 @@ in
       { app = "/Applications/Visual Studio Code.app"; }
       { app = "/Applications/Xcode.app"; }
       { app = "/Applications/Android Studio.app"; }
-      { app = "/Applications/Capacities.app"; }
+      { app = "/Applications/Obsidian.app"; }
       { app = "/Applications/Ghostty.app"; }
       { app = "/System/Applications/System Settings.app"; }
     ];
