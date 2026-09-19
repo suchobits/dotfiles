@@ -3,6 +3,10 @@
 let
   user = config.system.primaryUser;
   npmGlobalDir = "/Users/${user}/.npm-global";
+  # Upstream's darwin sandboxed test suite has a flaky orphaned-process
+  # reaper test (TestRunTestsAndSweepReapsOrphanedServer); skip checks
+  # rather than block the build on beads' own test suite.
+  beads = pkgs.beads.overrideAttrs (_: { doCheck = false; });
 in
 {
   # Direct-use CLI tools. Some nixpkgs names differ from the Homebrew
@@ -20,6 +24,7 @@ in
     delta
     desktoppr # scriptingosx/desktoppr: sets the desktop picture (darwin/defaults.nix postActivation)
     eza
+    fastfetch
     fd
     ffmpeg
     fzf
