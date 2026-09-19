@@ -21,7 +21,7 @@ Each recurring gotcha is documented in exactly one place. When it changes, updat
 
 - kotlin-lsp EAP expiry / monthly `version` bump -> `darwin/kotlin-lsp.nix`
 - activation-script naming (nix-darwin#663) -> `darwin/README.md` Notes
-- Swift `just lsp` / xcode-build-server workflow -> nvim `README.md` Swift section
+- Swift `xc-lsp` / xcode-build-server workflow -> nvim `README.md` Swift section
 - obsidian.nvim fork choice -> `stow/nvim/.config/nvim/lua/plugins/obsidian.lua`
 
 Do not reference commit hashes in prose. Do not frame terminal features around Warp - it is no longer used.

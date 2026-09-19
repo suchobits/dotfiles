@@ -318,7 +318,7 @@ Buffer-local inside a vault note:
 | `<leader>xl` | toggle build logs |
 | `<leader>xd` / `<leader>xs` | select device / scheme |
 
-Notes: cross-file LSP needs a `.compile` file - run the project's `just lsp` after adding files or changing build settings.
+Notes: cross-file LSP needs a `.compile` file - run `xc-lsp` (shell) after adding files or changing build settings.
 Project files are XcodeGen (`project.yml` -> generated `.xcodeproj`).
 On build/test failure Trouble auto-opens on the quickfix list and closes again on success.
 Live UI iteration is hot reload (InjectionNext + HotSwiftUI), baked into the `ios-starter` template - the in-editor SwiftUI preview is deliberately not used.

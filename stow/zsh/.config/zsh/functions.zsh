@@ -110,3 +110,65 @@ xc-reset() {
   unset DEVELOPER_DIR
   echo "DEVELOPER_DIR unset - back to xcode-select default ($(xcode-select -p))"
 }
+
+# -------------------------------------------------------------------
+# sourcekit-lsp cross-file resolution for any Xcode project.
+#
+# sourcekit-lsp needs a compile-flags database to see symbols across
+# files in a target. xcode-build-server's own `config` can't read
+# Xcode 26 build logs, so this does a clean build piped through
+# `parse -a` instead, writing buildServer.json + .compile to the
+# project root (both globally gitignored - see stow/git). Re-run
+# after adding files, deps, or changing build settings, then
+# :LspRestart in nvim. See nvim README's Swift section for detail.
+#   xc-lsp [SCHEME]   generate buildServer.json + .compile for the
+#                      .xcworkspace/.xcodeproj in the current directory
+# -------------------------------------------------------------------
+
+xc-lsp() {
+  emulate -L zsh
+  local scheme="$1" destination platforms rc
+  local -a project_arg destination_arg
+  local workspace=(*.xcworkspace(N)) xcodeproj=(*.xcodeproj(N))
+
+  if (( $#workspace )); then
+    project_arg=(-workspace "$workspace[1]")
+  elif (( $#xcodeproj )); then
+    project_arg=(-project "$xcodeproj[1]")
+  else
+    echo "no .xcworkspace or .xcodeproj in $PWD" >&2
+    return 1
+  fi
+
+  if [[ -z "$scheme" ]]; then
+    scheme=$(xcodebuild -list -json "${project_arg[@]}" 2>/dev/null | jq -r '(.workspace // .project).schemes[0] // empty')
+    if [[ -z "$scheme" ]]; then
+      echo "no scheme found - pass one: xc-lsp SCHEME" >&2
+      return 1
+    fi
+  fi
+
+  platforms=$(xcodebuild -showBuildSettings "${project_arg[@]}" -scheme "$scheme" 2>/dev/null \
+    | awk -F'= ' '/ SUPPORTED_PLATFORMS /{ print $2; exit }')
+  case "$platforms" in
+    *iphonesimulator*) destination="generic/platform=iOS Simulator" ;;
+    *appletvsimulator*) destination="generic/platform=tvOS Simulator" ;;
+    *watchsimulator*) destination="generic/platform=watchOS Simulator" ;;
+    *xrsimulator*) destination="generic/platform=visionOS Simulator" ;;
+    *macosx*) destination="generic/platform=macOS" ;;
+  esac
+  [[ -n "$destination" ]] && destination_arg=(-destination "$destination")
+
+  local log="${TMPDIR:-/tmp}/xc-lsp-$$.log"
+  xcodebuild clean build "${project_arg[@]}" -scheme "$scheme" "${destination_arg[@]}" 2>&1 \
+    | tee "$log" \
+    | xcode-build-server parse -a
+  rc=$pipestatus[1]
+
+  if (( rc != 0 )); then
+    echo "build failed - see $log" >&2
+    return 1
+  fi
+  rm -f "$log"
+  echo "buildServer.json + .compile written for scheme '$scheme'${destination:+ ($destination)}. Run :LspRestart in nvim."
+}

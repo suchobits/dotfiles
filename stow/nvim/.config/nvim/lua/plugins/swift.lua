@@ -153,7 +153,7 @@ return {
       },
       integrations = {
         -- Off: it runs `xcode-build-server config`, broken on Xcode 26.
-        -- The project's `just lsp` is used instead (see nvim README, Swift).
+        -- `xc-lsp` (shell) is used instead (see nvim README, Swift).
         xcode_build_server = { enabled = false },
         lldb = { port = 13000 }, -- Xcode's bundled lldb-dap
         -- On-device debugging (iOS 17+ needs the passwordless-sudo tunnel
