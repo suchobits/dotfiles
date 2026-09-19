@@ -1,0 +1,6 @@
+**/.claude/settings.local.json
+
+# sourcekit-lsp / xcodebuild.nvim state (stow/nvim/.config/nvim/README.md, Swift section)
+buildServer.json
+.compile
+.nvim/xcodebuild/

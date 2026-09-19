@@ -29,6 +29,7 @@ There are also shell shortcuts (from `zsh`'s `aliases.zsh`, so they work from an
 | `herdr` | `~/.config/herdr/config.toml` |
 | `tmux` | `~/.tmux.conf` |
 | `sesh` | `~/.config/sesh/sesh.toml` |
+| `git` | `~/.gitconfig`, `~/.config/git/ignore` |
 | `starship` | `~/.config/starship.toml` |
 | `ghostty` | `~/.config/ghostty/` |
 | `nvim` | `~/.config/nvim/` |
