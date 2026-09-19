@@ -41,6 +41,7 @@ return {
       { "<leader>oy", "<cmd>Obsidian yesterday<cr>",    desc = "Obsidian: yesterday's note" },
       { "<leader>ob", "<cmd>Obsidian backlinks<cr>",    desc = "Obsidian: backlinks" },
       { "<leader>ol", "<cmd>Obsidian links<cr>",        desc = "Obsidian: links in note" },
+      { "<leader>of", "<cmd>Obsidian follow_link<cr>",  desc = "Obsidian: follow link" },
       { "<leader>oT", "<cmd>Obsidian template<cr>",     desc = "Obsidian: insert template" },
       { "<leader>op", "<cmd>Obsidian paste_img<cr>",    desc = "Obsidian: paste image" },
       { "<leader>or", "<cmd>Obsidian rename<cr>",       desc = "Obsidian: rename note" },
@@ -52,6 +53,7 @@ return {
         { name = "suchobits", path = vault },
       },
       picker = { name = "snacks.picker" },
+      templates = { folder = "Templates" },
       ui = {
         enable = true,
         -- render-markdown is turned off for the vault instead (see below).
