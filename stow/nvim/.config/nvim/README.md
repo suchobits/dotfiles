@@ -110,6 +110,15 @@ Binary install is a pinned download in [`darwin/kotlin-lsp.nix`](../../../../dar
 
 Caveat: the bundled `intellij-server` EAP build expires ~monthly and needs a `version` bump in [`darwin/kotlin-lsp.nix`](../../../../darwin/kotlin-lsp.nix) (details there).
 
+### Gradle build/run
+
+`gradle.lua` wires build/test/run for Gradle Kotlin projects (Spring Boot today) - v1 of a Kotlin equivalent to `swift.lua`'s xcodebuild.nvim role.
+Code lives in the private `dotfiles-gradle` repo, symlinked to `<config>/gradle` the same way `vira/` is (kept private while it stabilizes, per the Android section below).
+
+- `<leader>kb` / `<leader>kt` / `<leader>kc` - build / test / clean via `./gradlew`. Output is parsed into the quickfix list (kotlinc's `e: file://<path>:<line>:<col> <message>` format); Trouble auto-opens on failure and closes on success, same pattern as Swift.
+- `<leader>kl` - toggle a scratch buffer with the last task's full raw output.
+- `<leader>kr` - run (`bootRun` if `build.gradle(.kts)` has the Spring Boot plugin, else `run`; prompts to confirm/override) in a `snacks.terminal` split, since a running server wants a live, interactive view rather than structured errors.
+
 ## Swift / iOS / macOS
 
 `swift.lua` wires:
@@ -143,8 +152,7 @@ xcodebuild.nvim's in-editor SwiftUI preview (`:XcodebuildPreviewGenerateAndShow`
 
 ## Android
 
-Planned: a purpose-built plugin in the spirit of xcodebuild.nvim, wrapping `gradle` / `adb` / the `android` CLI for build, install, and logcat.
-It will be developed as a vendored local directory plugin first (like `vira/`), kept private while it stabilises, then extracted to its own repo.
+The Gradle core (build/test/run - see above) is wired; the `adb` / `android` CLI layer for install, launch, and logcat is still planned, to be added to the same `dotfiles-gradle` plugin.
 Kotlin LSP already covers editing; this is only about the build/run/device loop.
 
 ## File explorer and pickers
