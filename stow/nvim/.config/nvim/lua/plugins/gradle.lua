@@ -1,7 +1,6 @@
--- Gradle build/test/run for Kotlin/JVM (Spring Boot today) - v1 of the
--- xcodebuild.nvim-equivalent for Kotlin. No Android layer yet (see nvim
--- README's Android section). Code lives in dotfiles-gradle (private,
--- unstable while it's developed), symlinked to <config>/gradle.
+-- Gradle build/test/run for Kotlin/JVM (Spring Boot, Android) - the
+-- xcodebuild.nvim-equivalent for Kotlin. Code lives in dotfiles-gradle
+-- (private, unstable while it's developed), symlinked to <config>/gradle.
 return {
   {
     dir = vim.fn.stdpath("config") .. "/gradle",
@@ -9,11 +8,14 @@ return {
     ft = "kotlin",
     -- stylua: ignore
     keys = {
-      { "<leader>kb", function() require("gradle").build() end,      desc = "Gradle build" },
-      { "<leader>kt", function() require("gradle").test() end,       desc = "Gradle test" },
-      { "<leader>kc", function() require("gradle").clean() end,      desc = "Gradle clean" },
-      { "<leader>kr", function() require("gradle").run() end,        desc = "Gradle run" },
-      { "<leader>kl", function() require("gradle").toggle_log() end, desc = "Toggle Gradle log" },
+      { "<leader>kb", function() require("gradle").build() end,                desc = "Gradle build" },
+      { "<leader>kt", function() require("gradle").test() end,                 desc = "Gradle test" },
+      { "<leader>kc", function() require("gradle").clean() end,                desc = "Gradle clean" },
+      { "<leader>kr", function() require("gradle").run() end,                  desc = "Gradle run" },
+      { "<leader>kl", function() require("gradle").toggle_log() end,           desc = "Toggle Gradle log" },
+      { "<leader>ar", function() require("gradle.android").run() end,          desc = "Android build+run" },
+      { "<leader>al", function() require("gradle.android").toggle_log() end,   desc = "Toggle logcat" },
+      { "<leader>ad", function() require("gradle.android").select_device() end, desc = "Select Android device" },
     },
     config = function()
       -- Same Trouble-on-failure pattern as xcodebuild.nvim in swift.lua.

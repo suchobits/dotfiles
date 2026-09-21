@@ -152,8 +152,13 @@ xcodebuild.nvim's in-editor SwiftUI preview (`:XcodebuildPreviewGenerateAndShow`
 
 ## Android
 
-The Gradle core (build/test/run - see above) is wired; the `adb` / `android` CLI layer for install, launch, and logcat is still planned, to be added to the same `dotfiles-gradle` plugin.
-Kotlin LSP already covers editing; this is only about the build/run/device loop.
+`gradle/lua/gradle/android.lua` (in `dotfiles-gradle`, same plugin as the Gradle core above) layers install/launch/logcat on top of it:
+
+- `<leader>ar` - detects the Android app module (the one directory under the project with `src/main/AndroidManifest.xml`, preferring one named `app`; prompts if there's more than one candidate), builds it via the shared `gradle.task()` path (`:app:assembleDebug` - same quickfix/Trouble treatment as any other Gradle build), then installs and launches it with the `android` CLI (`android run --apks=...`), which auto-detects the launcher activity from the APK - no manifest parsing needed here.
+- `<leader>al` - toggles a live `adb logcat` filtered to the app's PID, in a `snacks.terminal` split.
+- `<leader>ad` - (re-)selects the target device: uses the one connected `adb` device silently, prompts among several, or offers to boot an AVD (`android emulator start`, which blocks until ready) if none are connected.
+
+Kotlin LSP already covers editing; this is only the build/run/device loop.
 
 ## File explorer and pickers
 
