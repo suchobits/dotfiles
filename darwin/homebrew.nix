@@ -19,6 +19,14 @@
     # JSON decode error instead of a clear version message.
     brews = [ "xcodes" ];
 
+    # Declared so `cleanup = "zap"` does not untap it.
+    taps = [
+      {
+        name = "OpenEmu-Silicon/OpenEmu-Silicon";
+        clone_target = "https://github.com/OpenEmu-Silicon/OpenEmu-Silicon";
+      }
+    ];
+
     casks = [
       "android-studio"
       "antigravity-cli" # `agy` CLI
@@ -39,6 +47,7 @@
       "kicad"
       "logi-options+" # renamed from logi-options-plus
       "obsidian"
+      "openemu-silicon" # from the OpenEmu-Silicon tap
       "orbstack"
       "protonvpn"
       "raycast"
