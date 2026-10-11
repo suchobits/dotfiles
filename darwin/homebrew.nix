@@ -47,7 +47,7 @@
       "kicad"
       "logi-options+" # renamed from logi-options-plus
       "obsidian"
-      "openemu-silicon" # from the OpenEmu-Silicon tap
+      "openemu-silicon/openemu-silicon/openemu-silicon" # tap casks must be fully qualified to be trusted
       "orbstack"
       "protonvpn"
       "raycast"
