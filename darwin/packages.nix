@@ -42,6 +42,7 @@ in
     librsvg
     maestro # maestro.mobile.dev, not the unrelated same-named brew formula
     mermaid-cli
+    mise # per-project tool versions (node etc.); nodejs below is the global baseline
     neovim
     nil # nvim nix LSP (nil_ls, from the lang.nix extra)
     nixfmt # nvim nix format-on-save (conform); RFC-style Nix formatter

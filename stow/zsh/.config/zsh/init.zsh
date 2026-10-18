@@ -45,3 +45,6 @@ command -v zoxide &> /dev/null && eval "$(zoxide init zsh)"
 
 # tv fuzzy finder
 command -v tv &> /dev/null && eval "$(tv init zsh)"
+
+# mise (per-project tool versions; activated after nix nodejs so project pins win)
+command -v mise &> /dev/null && eval "$(mise activate zsh)"
