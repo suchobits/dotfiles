@@ -8,6 +8,10 @@
     # on every switch.
     onActivation.cleanup = "zap";
 
+    # Bring brews and casks current on every switch.
+    onActivation.autoUpdate = true;
+    onActivation.upgrade = true;
+
     # No --force: it is only needed to adopt a pre-existing app at a
     # different version. Left on, it would let Homebrew revert a
     # self-updated app to its cached version. Without it, a mismatch

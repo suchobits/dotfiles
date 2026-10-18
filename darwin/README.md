@@ -68,9 +68,8 @@ It does not undo a Homebrew zap, which is a filesystem deletion and needs a rein
 
 `homebrew.onActivation.cleanup = "zap"` and `programs.mas.cleanup` uninstall anything installed but not declared, with its data, on every switch, without confirmation.
 
-App updates: casks with `auto_updates: true` update in-app.
+Updates: every `switch` upgrades Homebrew formulae and casks (`onActivation.upgrade`) and MAS apps (`programs.mas.update`).
 Nix CLI tools update as a set via `nix flake update` then `switch`.
-MAS apps self-update via `programs.mas.update`.
 
 ## Manually installed apps
 

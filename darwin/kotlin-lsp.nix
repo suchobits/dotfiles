@@ -13,8 +13,8 @@ let
   # ~30 days after release ("This build ... has expired"). Set `version`
   # and `sha256` from the newest tag + its macOS-arm64 checksum at
   # https://github.com/Kotlin/kotlin-lsp/releases.
-  version = "263.6379.0";
-  sha256 = "ebef2e13cd4adc4ec9e04084b848000a3ec7a9d2917c64f269574ce2efe9ecad";
+  version = "263.7084.0";
+  sha256 = "b403bf8a54bd458e3ba6731cf8abb3340be08b439c03576dfc02b13faf3694b8";
   url = "https://download.jetbrains.com/language-server/kotlin-server/${version}/kotlin-server-${version}-aarch64.sit";
 
   # curl/shasum/ditto are macOS built-ins. The .sit is a plain zip that

@@ -8,6 +8,9 @@
     # Uninstalls anything installed but not declared, like homebrew zap.
     cleanup = true;
 
+    # Also update installed apps on every switch.
+    update = true;
+
     packages = {
       CleanMyMac = 1339170533;
       Noir = 1592917505;
