@@ -12,3 +12,8 @@ prefix = "ctrl+s"
 # terminal's ANSI palette (stow/ghostty/.config/ghostty/themes/Vira-Theme-Carbon).
 name = "vesper"
 auto_switch = false
+
+[theme.custom]
+# Vesper's default navigate cursor row is near-invisible on Vira Carbon.
+selection_bg = "#474747"
+active_row_bg = "#2a2a2a"

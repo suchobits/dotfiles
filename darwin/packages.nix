@@ -71,7 +71,7 @@ in
   ];
 
   # npm-only tools with no nixpkgs or Homebrew package:
-  # @earendil-works/pi-coding-agent, and @playwright/cli (the
+  # @earendil-works/pi-coding-agent, @readwise/cli, and @playwright/cli (the
   # `playwright-cli` binary; nixpkgs' `playwright` is playwright-core,
   # the library only). Installed idempotently on every activation into a
   # per-user prefix.
@@ -95,7 +95,7 @@ in
       ${pkgs.nodejs}/bin/npm install --prefix ${npmGlobalDir} -g \
         --allow-scripts=@google/genai,esbuild,protobufjs \
         --no-fund --no-audit --loglevel=error \
-        @earendil-works/pi-coding-agent @playwright/cli
+        @earendil-works/pi-coding-agent @readwise/cli @playwright/cli
 
     # pymobiledevice3: PyPI-only, needed by xcodebuild.nvim for on-device
     # iOS debugging. uv keeps its own venv under ~/.local/share/uv/tools

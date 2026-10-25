@@ -16,7 +16,7 @@ export PATH="/Users/lrs/.local/bin:$PATH"
 # Bun global installs (e.g. `bun add -g`, used for firecrawl-cli)
 export PATH="$HOME/.bun/bin:$PATH"
 
-# npm-only tools nix-darwin installs (pi, playwright-cli - see
+# npm-only tools nix-darwin installs (pi, readwise, playwright-cli - see
 # darwin/packages.nix's activation script)
 export PATH="$HOME/.npm-global/bin:$PATH"
 
