@@ -11,7 +11,7 @@ Dotfiles are separate - see [../stow/README.md](../stow/README.md).
 | `configuration.nix` | Entry point: host platform, unfree allowlist, `stateVersion`, imports |
 | `packages.nix` | CLI tools (`environment.systemPackages`), plus npm-only tools via activation script |
 | `homebrew.nix` | GUI apps (`homebrew.casks`) |
-| `mas.nix` | Mac App Store apps (`programs.mas`) |
+| `mas.nix` | Mac App Store apps (root-run `mas` activation script) |
 | `defaults.nix` | macOS settings (`system.defaults`): dark mode, icon/widget style, Dock; Terminal theme and desktop wallpaper via activation script |
 | `launchd.nix` | Scheduled jobs (`launchd.agents`) |
 | `kotlin-lsp.nix` | Pinned JetBrains kotlin-lsp download via activation script (not in nixpkgs, not a cask) |
@@ -39,10 +39,11 @@ darwin-rebuild build --flake ~/Developer/repos/dotfiles#MBP
 Activate - writes `/etc`, `/Library`, and launchd, and runs `brew` and `mas`:
 
 ```sh
-sudo MAS_NO_AUTO_INDEX=1 darwin-rebuild switch --flake ~/Developer/repos/dotfiles#MBP
+sudo darwin-rebuild switch --flake ~/Developer/repos/dotfiles#MBP
 ```
 
-`MAS_NO_AUTO_INDEX=1` stops `mas`'s own Spotlight-reindex diagnostic text (printed right after installing a large app not yet indexed, e.g. Xcode) from bleeding into nix-darwin's `programs.mas` cleanup loop, which parses that same output for installed bundle IDs - without it, cleanup word-splits the diagnostic text into garbage IDs and harmlessly no-ops trying to "uninstall" each one.
+`mas` 7 needs root to install, update, and uninstall, so `mas.nix` runs it directly from activation instead of through `programs.mas`, which runs it as the user and swallows the failures.
+A new free app is fetched with `mas get`; an app macOS protects (SIP) cannot be updated or removed by `mas`.
 
 Quit any GUI app whose cask is installing or updating first.
 Homebrew cannot replace the files of a running app.
@@ -66,9 +67,9 @@ It does not undo a Homebrew zap, which is a filesystem deletion and needs a rein
 - **Mac App Store app**: find its numeric ID (`mas search <name>`, or the App Store URL), add to `mas.nix`.
 - **Remove**: delete the line and switch.
 
-`homebrew.onActivation.cleanup = "zap"` and `programs.mas.cleanup` uninstall anything installed but not declared, with its data, on every switch, without confirmation.
+`homebrew.onActivation.cleanup = "zap"` and `mas.nix` cleanup uninstall anything installed but not declared, with its data, on every switch, without confirmation.
 
-Updates: every `switch` upgrades Homebrew formulae and casks (`onActivation.upgrade`) and MAS apps (`programs.mas.update`).
+Updates: every `switch` upgrades Homebrew formulae and casks (`onActivation.upgrade`) and MAS apps (`mas update`).
 Nix CLI tools update as a set via `nix flake update` then `switch`.
 
 ## Manually installed apps

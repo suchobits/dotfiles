@@ -12,6 +12,9 @@
     onActivation.autoUpdate = true;
     onActivation.upgrade = true;
 
+    # Most casks self-update; brew skips those on upgrade unless greedy.
+    greedyCasks = true;
+
     # No --force: it is only needed to adopt a pre-existing app at a
     # different version. Left on, it would let Homebrew revert a
     # self-updated app to its cached version. Without it, a mismatch

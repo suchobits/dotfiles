@@ -1,40 +1,69 @@
-{
-  # programs.mas rather than homebrew.masApps: it skips gracefully when
-  # not signed in, where homebrew.masApps hangs, and its `mas` binary
-  # comes from nixpkgs.
-  programs.mas = {
-    enable = true;
+{ config, pkgs, ... }:
 
-    # Uninstalls anything installed but not declared, like homebrew zap.
-    cleanup = true;
+let
+  mas = "${pkgs.mas}/bin/mas";
 
-    # Also update installed apps on every switch.
-    update = true;
+  # name = id; names are for readability only.
+  apps = {
+    CleanMyMac = 1339170533;
+    Noir = 1592917505;
+    Developer = 640199958;
+    Keynote = 361285480;
+    Numbers = 361304891;
+    Pages = 361309726;
+    Scrivener3 = 1310686187;
+    Amphetamine = 937984704;
+    Ghostery = 6504861501;
 
-    packages = {
-      CleanMyMac = 1339170533;
-      Noir = 1592917505;
-      Developer = 640199958;
-      Keynote = 361285480;
-      Numbers = 361304891;
-      Pages = 361309726;
-      Scrivener3 = 1310686187;
-      Amphetamine = 937984704;
-
-      # mas can never install/update this - SIP blocks writes into an
-      # installed MAS app's bundle even as root (verified directly).
-      # Declared anyway so `cleanup` won't remove it; the install attempt
-      # below is skipped every switch since `mas list` already shows it.
-      TestFlight = 899247664;
-    };
+    # SIP blocks writes into an installed MAS app's bundle even as root,
+    # so mas never updates it. Declared so cleanup keeps it.
+    TestFlight = 899247664;
   };
 
-  # WhatsApp is a cask instead (see homebrew.nix); MAS id is 310633997.
-  # `cleanup` cannot remove a MAS app macOS protects; those are removed
-  # manually via Finder or Launchpad.
+  ids = builtins.concatStringsSep " " (map toString (builtins.attrValues apps));
 
-  # Xcode (497799835): same SIP block as TestFlight, but mas never gets a
-  # receipt for it, so it's never "already installed" and declaring it
-  # would redownload the full ~3GB every switch, forever. Left undeclared;
-  # updates via macOS's own background App Store updater instead.
+  # programs.mas runs mas as the user, but mas 7 needs root to install,
+  # get, update and uninstall, and fails silently (`|| true`). Activation
+  # is already root, so run mas directly.
+  script = pkgs.writeShellScript "mas-sync" ''
+    set -uo pipefail
+    desired=(${ids})
+
+    listing="$(${mas} list)" || { echo "mas list failed" >&2; exit 1; }
+    installed=()
+    while read -r id _; do
+      [[ "$id" =~ ^[0-9]+$ ]] && installed+=("$id")
+    done <<<"$listing"
+
+    has() { local x; for x in "''${@:2}"; do [ "$x" = "$1" ] && return 0; done; return 1; }
+
+    ${mas} update
+
+    # `install` only works for apps already gotten; `get` fetches new free ones.
+    for id in "''${desired[@]}"; do
+      has "$id" "''${installed[@]}" && continue
+      ${mas} install "$id" || ${mas} get "$id" || echo "could not install $id" >&2
+    done
+
+    # An empty listing means mas is broken, not that nothing is installed.
+    [ "''${#installed[@]}" -gt 0 ] || exit 0
+    for id in "''${installed[@]}"; do
+      has "$id" "''${desired[@]}" && continue
+      echo "removing $id from App Store" >&2
+      ${mas} uninstall "$id" || echo "could not remove $id" >&2
+    done
+  '';
+in
+{
+  environment.systemPackages = [ pkgs.mas ];
+
+  # Non-fatal: App Store state should not abort the switch.
+  system.activationScripts.postActivation.text = ''
+    echo "setting up App Store apps (mas)..." >&2
+    # mas resolves the App Store user from SUDO_UID/SUDO_GID, which
+    # activation's environment does not carry.
+    SUDO_UID="$(id -u ${config.system.primaryUser})" \
+      SUDO_GID="$(id -g ${config.system.primaryUser})" \
+      ${script} || echo "WARNING: mas sync failed" >&2
+  '';
 }
