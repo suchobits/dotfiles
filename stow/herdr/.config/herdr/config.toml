@@ -6,6 +6,13 @@ onboarding = false
 # Matches the tmux prefix this replaces - same muscle memory.
 prefix = "ctrl+s"
 
+# Navigate mode (prefix+w): vim keys also move the workspace selection.
+navigate_workspace_up = ["up", "k"]
+navigate_workspace_down = ["down", "j"]
+# Frees j/k; vertical pane focus stays on prefix+j/k outside navigate mode.
+navigate_pane_up = "ctrl+k"
+navigate_pane_down = "ctrl+j"
+
 [theme]
 # Inherit Ghostty's Vira Carbon palette instead of duplicating its hex
 # values here - "terminal" makes herdr UI colors follow the host
